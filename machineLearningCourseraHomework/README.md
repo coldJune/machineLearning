@@ -22,4 +22,4 @@
 2. [计算Sigmoid函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/sigmoid.m)
 3. [计算代价函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/costFunction.m)
 4. [预测数据](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/predict.m)
-5. [正规化代价theta](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/costFunctionReg.m)
+5. [正规化theta](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/costFunctionReg.m)
