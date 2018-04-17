@@ -14,3 +14,12 @@
 5. [计算多变量的代价函数](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraHomework/machine-learning-ex1/ex1/computeCostMulti.m)
 6. [使用梯度下降算法计算theta](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraHomework/machine-learning-ex1/ex1/gradientDescentMulti.m)
 7. [使用正规方程解theta](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraHomework/machine-learning-ex1/ex1/normalEqn.m)
+
+### 第三周总结资料
+[资料](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraNote/Note3.pdf)
+### 第三周作业
+1. [画出数据集的图像](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/plotData.m)
+2. [计算Sigmoid函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/sigmoid.m)
+3. [计算代价函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/costFunction.m)
+4. [预测数据](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/predict.m)
+5. [正规化代价theta](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex2/ex2/costFunctionReg.m)
