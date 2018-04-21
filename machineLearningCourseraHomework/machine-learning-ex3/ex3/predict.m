@@ -21,8 +21,15 @@ p = zeros(size(X, 1), 1);
 %       can use max(A, [], 2) to obtain the max for each row.
 %
 
-
-
+% 增加一个偏置单位
+a_1 = [ones(m,1) X];
+% 第一层到第二层
+z_2 = sigmoid(a_1*Theta1');
+% 增加一个偏置单位
+a_2 =[ones(size(z_2)(1),1) z_2];
+% 第二层到输出层
+z_3 = sigmoid(a_2*Theta2');
+[value p] = max(z_3,[],2);
 
 
 
