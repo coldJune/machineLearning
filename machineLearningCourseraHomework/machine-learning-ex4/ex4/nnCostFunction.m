@@ -61,9 +61,14 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
+X = [ones(m,1) X];
+h = sigmoid([ones(m,1) sigmoid(X*Theta1')]*Theta2');
+for i=1:num_labels,
 
-
-
+ y_k(y==i)=1;
+ y_k(y!=i)=0; 
+ J+= (-y_k*log(h(:,i))-(1-y_k)*log(1-h(:,i)))/m;
+end
 
 
 
