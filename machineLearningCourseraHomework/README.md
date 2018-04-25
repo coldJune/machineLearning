@@ -36,3 +36,16 @@
 2. [多类别分类](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraHomework/machine-learning-ex3/ex3/oneVsAll.m)
 3. [多类别预测](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraHomework/machine-learning-ex3/ex3/predictOneVsAll.m)
 4. [前向传播和预测](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraHomework/machine-learning-ex3/ex3/predict.m)
+
+### 第五周:神经网络后向传播算法
+#### 第五周总结资料
+[资料](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraNote/Note5.pdf)
+#### 第五周作业
+1. [多值前向传播及代价函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/nnCostFunction.m)
+2. [正规化代价函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/nnCostFunction.m)
+3. [S型函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/sigmoidGradient.m)
+4. [随机初始化Theta](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/randInitializeWeights.m)
+5. [后向传播算法](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/nnCostFunction.m)__*__
+6. [梯度检查](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/computeNumericalGradient.m)
+7. [正规化梯度下降函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/nnCostFunction.m)
+8. [使用fmincg训练算法](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/ex4.m)

@@ -61,51 +61,43 @@ Theta2_grad = zeros(size(Theta2));
 %               the regularization separately and then add them to Theta1_grad
 %               and Theta2_grad from Part 2.
 %
-X = [ones(m,1) X];
+
 % 计算假设函数
 % a_2 = g(theta_1*x)
 % a_3 = g(theta_2*a_2)
 % h=a_3
-z_2 = X*Theta1';
+a_1 = X;
+z_2 = [ones(m,1) a_1]*Theta1';
 a_2 = sigmoid(z_2);
 z_3 = [ones(m,1) a_2]*Theta2';
 a_3 = sigmoid(z_3);
 h = a_3;
 for i=1:num_labels,
-% k表示输出变量为k维向量，及预测结果有k个
-% 分别执行逻辑回归算法
+% k表示输出变量为k维向量，及预测结果有k个 分别执行逻辑回归算法
  y_k(y==i)=1;
  y_k(y!=i)=0; 
  J+= (-y_k*log(h(:,i))-(1-y_k)*log(1-h(:,i)))/m;
  end;
 J+= lambda*(sum(sum(Theta1(:,2:end).^2)) + sum(sum(Theta2(:,2:end).^2)))/(2*m);
 
+for t=1:m,
+  a1 = [1 X(t,:)];
+  z2 = a1*Theta1';
+  a2 = [1 sigmoid(z2)];
+  z3 = Theta2*a2';
+  a3 = sigmoid(z3);
+  y_k = zeros(num_labels,1);
+  y_k(y(t)) = 1; #设置真实值对应为1
 
-
-for i=1:num_labels,
-     y_k(y==i)=1;
-     y_k(y!=i)=0;
-     delta_3(:,i) = a_3(:,i) .- y_k';
- end;
-%Theta1 25*401
-%Theta2 10*26
-
-delta_2 = delta_3*Theta2(:,2:end) .* sigmoidGradient(z_2);
-size(delta_3);
-size(a_2);
-Theta2_grad(:,2:end) = delta_3'*a_2 ;
-Theta2_grad(:,1)=1;
-size(Theta2_grad);
-
-size(delta_2);
-size(X);
-
-size(Theta1_grad);
-size(Theta2_grad);
-
-
-
-
+  delta3 = a3 - y_k;#计算layer3误差
+  delta2 = Theta2(:,2:end)'*delta3 .* sigmoidGradient(z2');#计算layer2误差
+  Theta1_grad = Theta1_grad+delta2*a1;# 计算DELTA1
+  Theta2_grad = Theta2_grad+delta3*a2;# 计算DELTA2
+end;
+Theta1_grad = Theta1_grad ./m;
+Theta2_grad = Theta2_grad ./m;
+Theta1_grad(:,2:end) = Theta1_grad(:,2:end) + lambda.*Theta1(:,2:end) ./m;#正规化
+Theta2_grad(:,2:end) = Theta2_grad(:,2:end) + lambda.*Theta2(:,2:end) ./m;#正规化
 
 
 
