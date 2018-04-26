@@ -49,3 +49,12 @@
 6. [梯度检查](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/computeNumericalGradient.m)
 7. [正规化梯度下降函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/nnCostFunction.m)
 8. [使用fmincg训练算法](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex4/ex4/ex4.m)
+
+### 第六周：机器学习诊断法
+#### 第六周资料
+[资料](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraNote/Note6.pdf)
+#### 第六周作业
+1. [线性回归代价函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex5/ex5/linearRegCostFunction.m)
+2. [学习曲线](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex5/ex5/learningCurve.m)
+3. [添加多项式特征](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex5/ex5/polyFeatures.m)
+4. [验证lamda曲线](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex5/ex5/validationCurve.m)
