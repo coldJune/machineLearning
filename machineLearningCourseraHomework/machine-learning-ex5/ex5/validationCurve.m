@@ -39,6 +39,7 @@ error_val = zeros(length(lambda_vec), 1);
 %
 %
 
+% 计算训练集和交叉验证集都不使用正规化
 for i=1:length(lambda_vec),
   lambda = lambda_vec(i);
   theta = trainLinearReg(X,y,lambda);

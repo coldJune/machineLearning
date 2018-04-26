@@ -53,7 +53,8 @@ error_val   = zeros(m, 1);
 
 % ---------------------- Sample Solution ----------------------
 
-
+% 学习曲线中根据训练集中元素个数训练theta
+% 根据全部交叉验证集计算误差
 for i=1:m,
   theta = trainLinearReg(X(1:i,:),y(1:i),lambda);
   error_train(i) = linearRegCostFunction(X(1:i,:),y(1:i),theta,0)(1);
