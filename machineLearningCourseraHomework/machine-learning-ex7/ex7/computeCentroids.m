@@ -26,7 +26,12 @@ centroids = zeros(K, n);
 % Note: You can use a for-loop over the centroids to compute this.
 %
 
-
+for i=1:K,
+  X_ix = find(idx==i); %找到对应分组在原数据中的索引
+  if ~isempty(mean(X(X_ix,:))), %排除没有改特征的情况
+    centroids(i,:) = mean(X(X_ix,:));
+  end;
+end;
 
 
 
