@@ -67,3 +67,14 @@
 1. [高斯核函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex6/ex6/gaussianKernel.m)
 2. [单词列表](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex6/ex6/processEmail.m)
 3. [特征提取](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex6/ex6/emailFeatures.m)
+
+### 无监督学习
+#### 第八周：K-Means算法和主成分分析法(PCA)/维度约简
+#### 第八周资料
+[资料](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraNote/Note8.pdf)
+#### 第八周作业
+1. [簇分配](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/findClosestCentroids.m)
+2. [移动聚类中心](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/computeCentroids.m)
+3. [实现PCA](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/pca.m)
+4. [使用PCA降维](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/projectData.m)
+5. [还原数据](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/recoverData.m)
