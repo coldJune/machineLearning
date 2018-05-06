@@ -41,14 +41,20 @@ Theta_grad = zeros(size(Theta));
 %
 
 
+J = sum(sum((((X*Theta')-Y).*R).^2))/2; %M.*R 筛选出不为0的项
 
 
+for i = 1:num_movies,
+X_grad(i,:) = ((X(i,:)*Theta'-Y(i,:)).* R(i,:))*Theta+ lambda.*X(i,:);
+end;
+
+for j = 1:num_users,
+
+Theta_grad(j,:) = ((X*Theta(j,:)'-Y(:,j)) .*R(:,j))'*X+lambda.*Theta(j,:);
+end;
 
 
-
-
-
-
+ J += lambda*(sum(sum(Theta.^2))+sum(sum(X.^2)))/2;
 
 
 

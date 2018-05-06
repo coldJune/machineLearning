@@ -1,5 +1,5 @@
 ## [Coursera上的机器学习](https://www.coursera.org/learn/machine-learning)
-如果遇到中文字幕不同不得情况可以查看[b站视频](https://www.bilibili.com/video/av9912938)
+如果遇到中文字幕不同步的情况可以查看[b站视频](https://www.bilibili.com/video/av9912938)
 
 ### 监督学习
 #### 第一周：机器学习分类以及概述
@@ -78,3 +78,13 @@
 3. [实现PCA](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/pca.m)
 4. [使用PCA降维](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/projectData.m)
 5. [还原数据](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/recoverData.m)
+
+#### 第九周：异常检测和推荐系统
+#### 第九周资料
+[资料](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraNote/Note9.pdf)
+#### 第九周作业
+1. [使用高斯分布估计参数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/estimateGaussian.m)
+2. [选择ε](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/selectThreshold.m)
+3. [推荐系统的预测函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/cofiCostFunc.m)
+4. [推荐系统梯度下降](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/cofiCostFunc.m)
+5. [正规化预测函数和梯度下降参数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/cofiCostFunc.m)
