@@ -70,9 +70,9 @@
 
 ### 无监督学习
 #### 第八周：K-Means算法和主成分分析法(PCA)/维度约简
-#### 第八周资料
+##### 第八周资料
 [资料](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraNote/Note8.pdf)
-#### 第八周作业
+##### 第八周作业
 1. [簇分配](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/findClosestCentroids.m)
 2. [移动聚类中心](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/computeCentroids.m)
 3. [实现PCA](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/pca.m)
@@ -80,11 +80,15 @@
 5. [还原数据](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex7/ex7/recoverData.m)
 
 #### 第九周：异常检测和推荐系统
-#### 第九周资料
+##### 第九周资料
 [资料](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraNote/Note9.pdf)
-#### 第九周作业
+##### 第九周作业
 1. [使用高斯分布估计参数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/estimateGaussian.m)
 2. [选择ε](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/selectThreshold.m)
 3. [推荐系统的预测函数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/cofiCostFunc.m)
 4. [推荐系统梯度下降](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/cofiCostFunc.m)
 5. [正规化预测函数和梯度下降参数](https://github.com/coldJune/machineLearning/tree/master/machineLearningCourseraHomework/machine-learning-ex8/ex8/cofiCostFunc.m)
+
+#### 第十周：随机梯度下降和映射约减(Map Reduce)
+##### 第十周资料
+[资料](https://github.com/coldJune/machineLearning/blob/master/machineLearningCourseraNote/Note10.pdf)
