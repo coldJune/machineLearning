@@ -92,7 +92,7 @@ def majority_cnt(class_list):
     """
     class_count = {}
     for vote in class_list:
-        if vote not in class_count:
+        if vote not in class_count.keys():
             class_count[vote] = 0
         class_count[vote] += 1
         sorted_class_count = sorted(class_count.items(), key=operator.itemgetter(1), reverse=True)
@@ -108,7 +108,7 @@ def create_tree(data_set, labels):
     class_list = [example[-1] for example in data_set]
     if class_list.count(class_list[0]) == len(class_list):
         # 所有类标签完全相同则停止划分
-        return class_list
+        return class_list[0]
     if len(data_set[0]) == 1:
         # 使用完所有特征停止划分
         return majority_cnt(class_list)
@@ -136,7 +136,7 @@ def classify(input_tree, feat_labels, test_vec):
     :param test_vec: 测试向量
     :return:
     """
-    first_str = input_tree.keys()[0]
+    first_str = list(input_tree.keys())[0]
     second_dict = input_tree[first_str]
     # 找到当前列表第一个匹配first_str变量的标签
     feat_index = feat_labels.index(first_str)
@@ -169,3 +169,4 @@ def grab_tree(filename):
     """
     with open(filename, 'r', encoding='utf-8') as fr:
         return pickle.load(fr)
+

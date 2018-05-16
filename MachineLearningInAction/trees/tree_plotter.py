@@ -48,6 +48,7 @@ def get_num_leaves(my_tree):
 
 def get_tree_depth(my_tree):
     max_depth = 0
+    this_depth = 0
     first_str = list(my_tree.keys())[0]
     second_dict = my_tree[first_str]
     for key in second_dict.keys():
@@ -73,7 +74,7 @@ def plot_tree(my_tree, parent_pt, node_text):
     num_leaves = get_num_leaves(my_tree)
     depth = get_tree_depth(my_tree)
     first_str = list(my_tree.keys())[0]
-    cntr_pt = (plot_tree.xOff + (1.0 + float(num_leaves)/2.0/plot_tree.totalW, plot_tree.yOff))
+    cntr_pt = (plot_tree.xOff + (1.0 + float(num_leaves))/2.0/plot_tree.totalW, plot_tree.yOff)
     plot_mid_text(cntr_pt, parent_pt, node_text)
     plot_node(first_str, cntr_pt, parent_pt, decision_node)
     sencond_dict = my_tree[first_str]
