@@ -123,7 +123,7 @@ def bag_of_words_2_vec_mn(vocab_list, input_set):
     return_vec = [0]*len(vocab_list)
     for word in input_set:
         if word in vocab_list:
-            # 没遇到一个单词增加词向量中的对应值
+            # 每遇到一个单词增加词向量中的对应值
             return_vec[vocab_list.index(word)] += 1
     return return_vec
 
@@ -134,7 +134,7 @@ def text_parse(big_string):
     :param big_string: 大字符串
     :return:
     """
-    list_of_tokens = re.split(r'\W*', big_string)
+    list_of_tokens = re.split(r'\\W*', big_string)
     return [tok.lower()for tok in list_of_tokens if len(tok) > 2]
 
 
