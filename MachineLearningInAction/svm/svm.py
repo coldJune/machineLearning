@@ -140,3 +140,260 @@ def smo_simple(data_mat_in, class_labels, c, toler, max_iter):
             ite = 0
         print("迭代次数:%d" % ite)
     return b, alphas
+
+
+class OptStruct:
+    """
+    建立一个数据结构保存所有重要的值
+    """
+    def __init__(self, data_mat_in, class_labels, c, toler, k_tup):
+        self.X = data_mat_in
+        self.label_mat = class_labels
+        self.C = c
+        self.tol = toler
+        self.m = np.shape(data_mat_in)[0]
+        self.alphas = np.mat(np.zeros((self.m, 1)))
+        self.b = 0
+        self.eCache = np.mat(np.zeros((self.m, 2)))
+        self.K = np.mat(np.zeros((self.m, self.m)))
+        for i in range(self.m):
+            self.K[:, i] = kernel_trans(self.X, self.X[i, :], k_tup)
+
+
+def calc_ek(opt_s, k):
+    """计算误差值并返回
+    :param opt_s: 数据对象
+    :param k: alpha下标
+    :return:
+    """
+    # forecast_x_k = float(np.multiply(opt_s.alphas, opt_s.label_mat).T *
+    #                      (opt_s.X*opt_s.X[k, :].T) + opt_s.b)
+    # error_k = forecast_x_k - float(opt_s.label_mat[k])
+    forecast_x_k = float(np.multiply(opt_s.alphas, opt_s.label_mat).T*opt_s.K[:, k] + opt_s.b)
+    error_k = forecast_x_k - float(opt_s.label_mat[k])
+    return error_k
+
+
+def select_j(i, opt_s, error_i):
+    """选择第二个alpha值
+    :param i: 第一个alpha值的下表
+    :param opt_s: 数据对象
+    :param error_i: 第一个alpha值的误差
+    :return:
+    """
+    max_k = -1
+    max_delta_e = 0
+    error_j = 0
+    # 输入值error_i在缓存中设置成为有效的
+    opt_s.eCache[i] = [1, error_i]
+    # 构建一个非零表，非零error值对应的alpha值
+    valid_e_chache_list = np.nonzero(opt_s.eCache[:, 0].A)[0]
+    if len(valid_e_chache_list) > 1:
+        for k in valid_e_chache_list:
+            # 在所有值上进行循环并选择其中使得改变最大的那个
+            if k == i:
+                continue
+            error_k = calc_ek(opt_s, k)
+            delta_e = abs(error_i-error_k)
+            if delta_e > max_delta_e:
+                max_k = k
+                max_delta_e = delta_e
+                error_j = error_k
+        return max_k, error_j
+    else:
+        j = select_j_rand(i, opt_s.m)
+        error_j = calc_ek(opt_s, j)
+        return j, error_j
+
+
+def update_error_k(opt_s, k):
+    """计算误差值并存入缓存
+    :param opt_s: 数据对象
+    :param k: 第k个alpha
+    :return:
+    """
+    error_k = calc_ek(opt_s, k)
+    opt_s.eCache[k] = [1, error_k]
+
+
+def inner_l(i, opt_s):
+    """内循环
+    :param i: 第一个alpha下标
+    :param opt_s: 数据对象
+    :return:
+    """
+    error_i = calc_ek(opt_s, i)
+    if (((opt_s.label_mat[i]*error_i < -opt_s.tol) and (opt_s.alphas[i] < opt_s.C)) or
+            ((opt_s.label_mat[i]*error_i > opt_s.tol) and (opt_s.alphas[i] > 0))):
+        j, error_j = select_j(i, opt_s, error_i)
+        alpha_i_old = opt_s.alphas[i].copy()
+        alpha_j_old = opt_s.alphas[j].copy()
+        if opt_s.label_mat[i] != opt_s.label_mat[j]:
+            l = max(0, opt_s.alphas[j] - opt_s.alphas[i])
+            h = min(opt_s.C, opt_s.C + opt_s.alphas[j] - opt_s.alphas[i])
+        else:
+            l = max(0, opt_s.alphas[j]+opt_s.alphas[i]-opt_s.C)
+            h = min(opt_s.C, opt_s.alphas[j] + opt_s.alphas[i])
+        if l == h:
+            print('L==H')
+            return 0
+        # eta = 2.0*opt_s.X[i, :]*opt_s.X[j, :].T -\
+        #     opt_s.X[i, :]*opt_s.X[i, :].T -\
+        #     opt_s.X[j, :]*opt_s.X[j, :].T
+        eta = 2.0* opt_s.K[i, j] - opt_s.K[i, i] - opt_s.K[j, j] #核函数
+        if eta >= 0:
+            print('eta >=0')
+            return 0
+        opt_s.alphas[j] -= opt_s.label_mat[j] * (error_i-error_j)/eta
+        opt_s.alphas[j] = clip_alpha(opt_s.alphas[j], h, l)
+        update_error_k(opt_s, j)
+        if abs(opt_s.alphas[j] - alpha_j_old) < 0.00001:
+            print('j未移动足够的量')
+            return 0
+        opt_s.alphas[i] += opt_s.label_mat[j]*opt_s.label_mat[i]*(alpha_j_old-opt_s.alphas[j])
+        update_error_k(opt_s, i)
+        # b1 = opt_s.b-error_i-opt_s.label_mat[i] * \
+        #     (opt_s.alphas[i]-alpha_i_old)*opt_s.X[i, :]*opt_s.X[i, :].T - \
+        #     opt_s.label_mat[j]*(opt_s.alphas[j]-alpha_j_old)*opt_s.X[i, :]*opt_s.X[j, :].T
+        # b2 = opt_s.b - error_j-opt_s.label_mat[i] *\
+        #     (opt_s.alphas[i]-alpha_i_old)*opt_s.X[i, :]*opt_s.X[i, :].T - \
+        #     opt_s.label_mat[j]*(opt_s.alphas[j]-alpha_j_old)*opt_s.X[j, :]*opt_s.X[j, :].T
+        b1 = opt_s.b - error_i - opt_s.label_mat[i] * (opt_s.alphas[i] - alpha_i_old) * opt_s.K[i, i] - \
+            opt_s.label_mat[j] * (opt_s.alphas[j] - alpha_j_old) * opt_s.K[i, j]
+        b2 = opt_s.b - error_j - opt_s.label_mat[i] * (opt_s.alphas[i] - alpha_i_old) * opt_s.K[i, j] - \
+            opt_s.label_mat[j] * (opt_s.alphas[j] - alpha_j_old) * opt_s.K[j, j]
+        if (0 < opt_s.alphas[i]) and (opt_s.C > opt_s.alphas[i]):
+            opt_s.b = b1
+        elif (0 < opt_s.alphas[j]) and (opt_s.C > opt_s.alphas[j]):
+            opt_s.b = b2
+        else:
+            opt_s.b = (b1+b2)/2.0
+        return 1
+    else:
+        return 0
+
+
+def smo_p(data_mat_in, class_labels, c, toler, max_iter, k_tup=('lin', 0)):
+    """外循环
+    :param data_mat_in: 数据集
+    :param class_labels: 类别标签
+    :param c: 常数C
+    :param toler: 容错率
+    :param max_iter: 取消前最大的循环次数
+    :param k_tup:
+    :return:
+    """
+    # 构建数据结构容纳所有数据
+    opt_s = OptStruct(np.mat(data_mat_in), np.mat(class_labels).transpose(), c, toler, k_tup)
+    ite = 0
+    entire_set = True
+    alpha_pairs_changed = 0
+    while ite < max_iter and (alpha_pairs_changed > 0 or entire_set):
+        # 当迭代次数超过指定的最大值或遍历整个集合都为对任意alpha对进行修改时退出
+        alpha_pairs_changed = 0
+        if entire_set:
+            # 在数据集上遍历任意可能的alpha
+            for i in range(opt_s.m):
+                alpha_pairs_changed += inner_l(i, opt_s)
+            print("所有值，iter:%d i:%d ,pairs changed %d" % (ite, i, alpha_pairs_changed))
+            ite += 1
+        else:
+            # 遍历所有非边界alpha值
+            non_bound_is = np.nonzero((opt_s.alphas.A > 0)*(opt_s.alphas.A < c))[0]
+            for i in non_bound_is:
+                alpha_pairs_changed += inner_l(i, opt_s)
+                print("非边界，iter:%d i:%d,pairs changed:%d" % (ite, i, alpha_pairs_changed))
+            ite += 1
+        if entire_set:
+            entire_set = False
+        elif alpha_pairs_changed == 0:
+            entire_set = True
+        print("迭代次数：%d" % ite)
+    return opt_s.b, opt_s.alphas
+
+
+def calc_ws(alphas, data_arr, class_labels):
+    """计算w
+    :param alphas: alpha集
+    :param data_arr: 数据集
+    :param class_labels: 标签集
+    :return:
+    """
+    X = np.mat(data_arr)
+    label_mat = np.mat(class_labels).transpose()
+    m, n = np.shape(X)
+    w = np.zeros((n, 1))
+    for i in range(m):
+        w += np.multiply(alphas[i]*label_mat[i], X[i, :].T)
+    return w
+
+
+def kernel_trans(x, a, k_tup):
+    """
+    :param x:
+    :param a:
+    :param k_tup: 核函数信息
+    :return:
+    """
+    m, n = np.shape(x)
+    k = np.mat(np.zeros((m, 1)))
+    if k_tup[0] == 'lin':
+        # 线性核函数
+        # 就算所有数据集和数据集中的一行的内积
+        k = x * a.T
+    elif k_tup[0] == 'rbf':
+        # 径向基核函数
+        # 对于矩阵中每个元素计算高斯函数的值
+        for j in range(m):
+            delta_row = x[j, :] - a
+            k[j] = delta_row*delta_row.T
+        # 将值应用到整个向量
+        k = np.exp(k/(-1*k_tup[1]**2))
+    else:
+        raise NameError('不支持该核函数')
+    return k
+
+
+def test_rbf(k1=1.3):
+    """测试核函数
+    :param k1:
+    :return:
+    """
+    data_arr, label_arr = load_data_set('data/testSetRBF.txt')
+    b, alphas = smo_p(data_arr, label_arr, 200, 0.0001, 10000, ('rbf', k1))
+    data_mat = np.mat(data_arr)
+    label_mat = np.mat(label_arr).transpose()
+    # 得到支持向量和alpha的类别标签值
+    sv_ind = np.nonzero(alphas.A > 0)[0]
+    s_vs = data_mat[sv_ind]
+    label_sv = label_mat[sv_ind]
+    print("有%d个支持向量" % np.shape(s_vs)[0])
+    m, n = np.shape(data_mat)
+    error_count = 0
+    for i in range(m):
+        # 得到转换后的数据
+        kernel_eval = kernel_trans(s_vs, data_mat[i, :], ('rbf', k1))
+        # 将数据与前面的alpha及类别标签值求积
+        predict = kernel_eval.T*np.multiply(label_sv, alphas[sv_ind]) + b
+        if np.sign(predict) != np.sign(label_mat[i]):
+            error_count += 1
+    print("错误率为：%f" % (float(error_count)/m))
+
+    # 测试数据集
+    data_arr, label_arr = load_data_set('data/testSetRBF2.txt')
+    b, alphas = smo_p(data_arr, label_arr, 200, 0.0001, 10000, ('rbf', k1))
+    data_mat = np.mat(data_arr)
+    label_mat = np.mat(label_arr).transpose()
+    sv_ind = np.nonzero(alphas.A > 0)[0]
+    s_vs = data_mat[sv_ind]
+    label_sv = label_mat[sv_ind]
+    print("有%d个支持向量" % np.shape(s_vs)[0])
+    m, n = np.shape(data_mat)
+    error_count = 0
+    for i in range(m):
+        kernel_eval = kernel_trans(s_vs, data_mat[i, :], ('rbf', k1))
+        predict = kernel_eval.T * np.multiply(label_sv, alphas[sv_ind]) + b
+        if np.sign(predict) != np.sign(label_mat[i]):
+            error_count += 1
+    print("错误率为：%f" % (float(error_count)/m))
+
