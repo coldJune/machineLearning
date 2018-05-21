@@ -94,13 +94,14 @@ def stoc_grad_ascent0(data_matrix, class_labels):
     :return:
     """
     m, n = np.shape(data_matrix)
+    data_matrix = np.mat(data_matrix)
     alpha = 0.01
-    weights = np.ones(n)
+    weights = np.ones((n,1))
     for i in range(m):
         # 每一次只对一个样本运行梯度上升算法
         h = sigmoid(data_matrix[i]*weights)
         error = class_labels[i] - h
-        weights = weights + alpha*error*data_matrix[i]
+        weights = weights + np.mat(alpha*error*data_matrix[i]).transpose()
     return weights
 
 
