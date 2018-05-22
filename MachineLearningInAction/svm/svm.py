@@ -327,11 +327,13 @@ def calc_ws(alphas, data_arr, class_labels):
         w += np.multiply(alphas[i]*label_mat[i], X[i, :].T)
     return w
 
+"""核函数"""
+
 
 def kernel_trans(x, a, k_tup):
     """
-    :param x:
-    :param a:
+    :param x: 数据集
+    :param a: 数据集的一行
     :param k_tup: 核函数信息
     :return:
     """
@@ -377,17 +379,12 @@ def test_rbf(k1=1.3):
         predict = kernel_eval.T*np.multiply(label_sv, alphas[sv_ind]) + b
         if np.sign(predict) != np.sign(label_mat[i]):
             error_count += 1
-    print("错误率为：%f" % (float(error_count)/m))
+    print("训练错误率为：%f" % (float(error_count)/m))
 
     # 测试数据集
     data_arr, label_arr = load_data_set('data/testSetRBF2.txt')
-    b, alphas = smo_p(data_arr, label_arr, 200, 0.0001, 10000, ('rbf', k1))
     data_mat = np.mat(data_arr)
     label_mat = np.mat(label_arr).transpose()
-    sv_ind = np.nonzero(alphas.A > 0)[0]
-    s_vs = data_mat[sv_ind]
-    label_sv = label_mat[sv_ind]
-    print("有%d个支持向量" % np.shape(s_vs)[0])
     m, n = np.shape(data_mat)
     error_count = 0
     for i in range(m):
@@ -395,5 +392,85 @@ def test_rbf(k1=1.3):
         predict = kernel_eval.T * np.multiply(label_sv, alphas[sv_ind]) + b
         if np.sign(predict) != np.sign(label_mat[i]):
             error_count += 1
-    print("错误率为：%f" % (float(error_count)/m))
+    print("测试错误率为：%f" % (float(error_count)/m))
 
+
+"""基于SVM的手写数字识别"""
+
+
+def img2vector(filename):
+    """将图像转换为测试向量
+    将测试数据中32*32的二进制图像矩阵转换为1*1024的向量
+    :param filename: 文件名
+    :return:
+    """
+    return_vect = np.zeros((1, 1024))
+    with open(filename, 'r', encoding='utf-8') as file:
+        for i in range(32):
+            line_str = file.readline()
+            for j in range(32):
+                return_vect[0, 32*i+j] = int(line_str[j])
+    return return_vect
+
+
+def load_images(dir_name):
+    """加载图片为矩阵
+    :param dir_name: 文件目录
+    :return:
+    """
+    import os
+    hw_labels = []
+    training_file_list = os.listdir(dir_name)
+    m = len(training_file_list)
+    training_mat = np.zeros((m, 1024))
+    for i in range(m):
+        file_name_set = training_file_list[i]
+        file_str = file_name_set.split('.')[0]
+        class_num_str = int(file_str.split('_')[0])
+        if class_num_str == 9:
+            # 为9时标签置为-1
+            hw_labels.append(-1)
+        else:
+            # 否则置为1
+            hw_labels.append(1)
+        training_mat[i, :] = img2vector('%s/%s' % (dir_name, file_name_set))
+    return training_mat, hw_labels
+
+
+def test_digits(k_tup=('rbf', 10)):
+    """测试核函数
+    :param k_tup:
+    :return:
+    """
+    data_arr, label_arr = load_images('data/digits/trainingDigits')
+    b, alphas = smo_p(data_arr, label_arr, 200, 0.0001, 10000, k_tup)
+    data_mat = np.mat(data_arr)
+    label_mat = np.mat(label_arr).transpose()
+    # 得到支持向量和alpha的类别标签值
+    sv_ind = np.nonzero(alphas.A > 0)[0]
+    s_vs = data_mat[sv_ind]
+    label_sv = label_mat[sv_ind]
+    print("有%d个支持向量" % np.shape(s_vs)[0])
+    m, n = np.shape(data_mat)
+    error_count = 0
+    for i in range(m):
+        # 得到转换后的数据
+        kernel_eval = kernel_trans(s_vs, data_mat[i, :], k_tup)
+        # 将数据与前面的alpha及类别标签值求积
+        predict = kernel_eval.T*np.multiply(label_sv, alphas[sv_ind]) + b
+        if np.sign(predict) != np.sign(label_mat[i]):
+            error_count += 1
+    print("训练错误率为：%f" % (float(error_count)/m))
+
+    # 测试数据集
+    data_arr, label_arr = load_images('data/digits/testDigits')
+    data_mat = np.mat(data_arr)
+    label_mat = np.mat(label_arr).transpose()
+    m, n = np.shape(data_mat)
+    error_count = 0
+    for i in range(m):
+        kernel_eval = kernel_trans(s_vs, data_mat[i, :], k_tup)
+        predict = kernel_eval.T * np.multiply(label_sv, alphas[sv_ind]) + b
+        if np.sign(predict) != np.sign(label_mat[i]):
+            error_count += 1
+    print("测试错误率为：%f" % (float(error_count)/m))
