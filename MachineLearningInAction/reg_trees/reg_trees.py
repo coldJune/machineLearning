@@ -43,7 +43,25 @@ def bin_split_data_set(data_set, feature, value):
     return mat_0, mat_1
 
 
-def create_tree(data_set, leaf_type, err_type, ops=(1, 4)):
+def reg_leaf(data_set):
+    """生成叶节点
+    :param data_set: 数据集
+    :return:
+    """
+    # 回归树中是目标变量的均值
+    return np.mean(data_set[:, -1])
+
+
+def reg_err(data_set):
+    """误差估计函数
+    :param data_set:
+    :return:
+    """
+    # 总方差等于均方差乘以样本个数
+    return np.var(data_set[:, -1]) * np.shape(data_set)[0]
+
+
+def create_tree(data_set, leaf_type=reg_leaf, err_type=reg_err, ops=(1, 4)):
     """创建树
     :param data_set: 数据集
     :param leaf_type: 建立叶节点的函数
@@ -69,25 +87,7 @@ def create_tree(data_set, leaf_type, err_type, ops=(1, 4)):
     return ret_tree
 
 
-def reg_leaf(data_set):
-    """生成叶节点
-    :param data_set: 数据集
-    :return:
-    """
-    # 回归树中是目标变量的均值
-    return np.mean(data_set[:, -1])
-
-
-def reg_err(data_set):
-    """误差估计函数
-    :param data_set:
-    :return:
-    """
-    # 总方差等于均方差乘以样本个数
-    return np.var(data_set[:, -1]) * np.shape(data_set)[0]
-
-
-def choose_best_split(data_set, leaf_type, err_type, ops):
+def choose_best_split(data_set, leaf_type=reg_leaf, err_type=reg_err, ops=(1, 4)):
     """寻找数据的最佳二元切分方式
     :param data_set: 数据集
     :param leaf_type: 生成叶节点函数
@@ -191,3 +191,97 @@ def prune(tree, test_data):
             return tree
     else:
         return tree
+
+
+# 模型树
+def linear_solve(data_set):
+    """目标变量转换
+    将数据集格式化成目标变量Y和自变量X
+    :param data_set: 数据集
+    :return:
+    """
+    m, n = np.shape(data_set)
+    x = np.mat(np.ones((m, n)))
+    x[:, 1:n] = data_set[:, 0:n-1]
+    y = data_set[:, -1]
+    x_t_x = x.T*x
+    if np.linalg.det(x_t_x) == 0.0:
+        raise NameError('该矩阵不能求逆，尝试提高ops参数的第二个值')
+    ws = x_t_x.I*(x.T*y)
+    return ws, x, y
+
+
+def model_leaf(data_set):
+    """生成叶子节点的回归系数
+    :param data_set: 数据集
+    :return:
+    """
+    ws, x, y = linear_solve(data_set)
+    return ws
+
+
+def model_err(data_set):
+    """计算误差
+    :param data_set: 数据集
+    :return:
+    """
+    ws, x, y = linear_solve(data_set)
+    y_hat = x*ws
+    return np.sum(np.power(y-y_hat, 2))
+
+
+def reg_tree_eval(model, in_dat):
+    """数据转换
+    :param model: 树结构
+    :param in_dat: 输入数据
+    :return:
+    """
+    return np.float(model)
+
+
+def model_tree_eval(model, in_data):
+    """数据转换
+    :param model: 树结构
+    :param in_data: 输入数据
+    :return:
+    """
+    n = np.shape(in_data)[1]
+    x = np.mat(np.ones((1, n+1)))
+    x[:, 1:n+1] = in_data
+    return np.float(x*model)
+
+
+def tree_fore_cast(tree, in_data, model_eval=reg_tree_eval):
+    """预测函数
+    :param tree: 树结构
+    :param in_data: 输入数据
+    :param model_eval: 树的类型
+    :return:
+    """
+    if not is_tree(tree):
+        return model_err(tree, in_data)
+    if in_data[tree['sp_ind']] > tree['sp_val']:
+        if is_tree(tree['left']):
+            return tree_fore_cast(tree['left'], in_data, model_eval)
+        else:
+            return model_eval(tree['left'], in_data)
+    else:
+        if is_tree(tree['right']):
+            return tree_fore_cast(tree['right'], in_data, model_eval)
+        else:
+            return model_eval(tree['right'], in_data)
+
+
+def create_for_cast(tree, test_data, model_eval=reg_tree_eval):
+    """ 测试函数
+    :param tree: 树结构
+    :param test_data: 测试数据
+    :param model_eval: 树类型
+    :return:
+    """
+    m = len(test_data)
+    y_hat = np.mat(np.zeros((m, 1)))
+    for i in range(m):
+        y_hat[1, 0] = tree_fore_cast(tree, np.mat(test_data[i]), model_eval)
+    return y_hat
+
