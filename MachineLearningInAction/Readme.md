@@ -9,3 +9,5 @@
 ### 回归
 #### [线性回归](http://coldjune.com/2018/05/25/%E7%BA%BF%E6%80%A7%E5%9B%9E%E5%BD%92/)
 #### [树回归](http://coldjune.com/2018/05/28/%E6%A0%91%E5%9B%9E%E5%BD%92/)
+### 聚类
+#### [k-均值](http://coldjune.com/2018/05/28/K-%E5%9D%87%E5%80%BC/)
