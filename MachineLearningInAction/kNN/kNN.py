@@ -166,7 +166,7 @@ def handwriting_class_test():
         vector_under_test = img2vector('dataSet/digits/testDigits/%s' % file_name_str)
         classifier_result = classify(vector_under_test, training_mat, hw_labels, 3)
         print('预测值为：%d,真实值为：%d' % (classifier_result, hw_labels[i]))
-        if(classifier_result != class_num_str):
+        if classifier_result != class_num_str:
             error_account += 1.0
     print("预测错误个数为:%d" % error_account)
     print("错误率为：%f" % (error_account/float(m_test)))
