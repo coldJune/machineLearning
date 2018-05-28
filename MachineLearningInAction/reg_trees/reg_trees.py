@@ -259,7 +259,7 @@ def tree_fore_cast(tree, in_data, model_eval=reg_tree_eval):
     :return:
     """
     if not is_tree(tree):
-        return model_err(tree, in_data)
+        return model_eval(tree, in_data)
     if in_data[tree['sp_ind']] > tree['sp_val']:
         if is_tree(tree['left']):
             return tree_fore_cast(tree['left'], in_data, model_eval)
@@ -282,6 +282,6 @@ def create_for_cast(tree, test_data, model_eval=reg_tree_eval):
     m = len(test_data)
     y_hat = np.mat(np.zeros((m, 1)))
     for i in range(m):
-        y_hat[1, 0] = tree_fore_cast(tree, np.mat(test_data[i]), model_eval)
+        y_hat[i, 0] = tree_fore_cast(tree, np.mat(test_data[i]), model_eval)
     return y_hat
 
