@@ -11,3 +11,9 @@
 #### [树回归](http://coldjune.com/2018/05/28/%E6%A0%91%E5%9B%9E%E5%BD%92/)
 ### 聚类
 #### [k-均值](http://coldjune.com/2018/05/28/K-%E5%9D%87%E5%80%BC/)
+### 频繁项集
+#### [Apriori算法](http://coldjune.com/2018/05/29/Apriori%E7%AE%97%E6%B3%95/)
+#### [FP-growth算法](http://coldjune.com/2018/05/30/FP-growth%E7%AE%97%E6%B3%95/)
+### 机器学习工具
+#### 降维
+##### [PCA](http://coldjune.com/2018/05/30/PCA/)
