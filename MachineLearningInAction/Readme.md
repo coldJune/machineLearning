@@ -17,3 +17,4 @@
 ### 机器学习工具
 #### 降维
 ##### [PCA](http://coldjune.com/2018/05/30/PCA/)
+##### [SVD](http://coldjune.com/2018/05/31/SVD/)
