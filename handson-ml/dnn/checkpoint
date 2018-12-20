@@ -1,2 +1,2 @@
-model_checkpoint_path: "learning_rate_scheduling_model_final.ckpt"
-all_model_checkpoint_paths: "learning_rate_scheduling_model_final.ckpt"
+model_checkpoint_path: "max_norm_model_final.ckpt"
+all_model_checkpoint_paths: "max_norm_model_final.ckpt"
