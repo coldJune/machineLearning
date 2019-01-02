@@ -1,3 +1,2 @@
-model_checkpoint_path: "my_mode_cache_frozen.ckpt"
-all_model_checkpoint_paths: "my_model_one_at_a_time.ckpt"
-all_model_checkpoint_paths: "my_mode_cache_frozen.ckpt"
+model_checkpoint_path: "my_model_supervised.ckpt"
+all_model_checkpoint_paths: "my_model_supervised.ckpt"
