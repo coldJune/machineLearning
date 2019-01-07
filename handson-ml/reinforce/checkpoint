@@ -1,2 +1,2 @@
-model_checkpoint_path: "my_policy_net_basic.ckpt"
-all_model_checkpoint_paths: "my_policy_net_basic.ckpt"
+model_checkpoint_path: "nmy_policy_net_pg.ckpt"
+all_model_checkpoint_paths: "nmy_policy_net_pg.ckpt"
